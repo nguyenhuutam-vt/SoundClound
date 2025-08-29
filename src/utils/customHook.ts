@@ -1,0 +1,33 @@
+import { useEffect, useState } from "react";
+import WaveSurfer, { WaveSurferOptions } from "wavesurfer.js";
+
+export const useHasMounted = () => {
+  const [hasMounted, setHasMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  return hasMounted;
+};
+
+export const useWavesurfer = (
+  containerRef: React.RefObject<HTMLDivElement>,
+  options: Omit<WaveSurferOptions, "container">
+) => {
+  const [wavesurfer, setWaveSufer] = useState<WaveSurfer | null>(null);
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ws = WaveSurfer.create({
+      ...options,
+      container: containerRef.current!,
+    });
+
+    setWaveSufer(ws);
+
+    return () => ws.destroy();
+  }, [containerRef, options]);
+
+  return wavesurfer;
+};
