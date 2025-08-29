@@ -67,8 +67,8 @@ export default function AppHeader() {
     React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const { data: session } = useSession(); // lay session
+  // lay session, use-component lay tu session
+  const { data: session } = useSession();
   console.log(session);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -118,12 +118,11 @@ export default function AppHeader() {
       <MenuItem>
         <Link
           style={{ textDecoration: "none", color: "inherit" }}
-          href="/logout"
+          href="#"
+          onClick={() => signOut({ callbackUrl: "/" })}
         >
           Logout
         </Link>
-
-        {/* <button onClick={() => signOut({ callbackUrl: "/" })}>Logout</button> */}
       </MenuItem>
     </Menu>
   );
@@ -232,7 +231,7 @@ export default function AppHeader() {
                 </>
               ) : (
                 <>
-                  <Link href="/api/auth/signin">Login</Link>
+                  <Link href="/auth/signin">Login</Link>
                   <Link href="/register">Register</Link>
                 </>
               )}
