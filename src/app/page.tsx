@@ -8,8 +8,8 @@ import AppFooter from "./component/footer/app.footer";
 export default async function HomePage() {
   //get session de co the ai truy cap dc
   //cach de server-component co the lay duoc session
+  //cach lay session tu phia sever
   const session = await getServerSession(authOptions);
-  console.log(session);
 
   const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: "http://localhost:8000/api/v1/tracks/top",

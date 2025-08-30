@@ -9,7 +9,6 @@ const WaveTrack = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const fileName = searchParams.get("audio");
-  console.log(fileName);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 

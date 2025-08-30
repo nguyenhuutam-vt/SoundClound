@@ -69,7 +69,6 @@ export default function AppHeader() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   // lay session, use-component lay tu session
   const { data: session } = useSession();
-  console.log(session);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -103,7 +102,7 @@ export default function AppHeader() {
       //     horizontal: "right",
       //   }}
       transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      anchorOrigin={{ horizontal: "right", vertical: "top" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -226,7 +225,7 @@ export default function AppHeader() {
                 <>
                   <Link href="/playlist">Playlist</Link>
                   <Link href="/likes">Likes</Link>
-                  <Link href="/upload">Upload</Link>
+                  <Link href="/track/upload">Upload</Link>
                   <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
                 </>
               ) : (

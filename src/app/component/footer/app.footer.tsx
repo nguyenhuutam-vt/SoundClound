@@ -21,7 +21,7 @@ const AppFooter = () => {
           <AudioPlayer
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
             volume={0.5}
-            onPlay={(e) => console.log("onPlay")}
+           
             // other props here
           />
           <div
