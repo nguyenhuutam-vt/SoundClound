@@ -1,3 +1,4 @@
+import { sendRequest } from "@/utils/api";
 import {
   Box,
   Button,
@@ -9,7 +10,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import { CloudUploadIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 
@@ -55,16 +58,46 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function InputFileUpload() {
+function InputFileUpload(props: any) {
+  const { setInfo, info } = props;
+  const { data: session } = useSession();
+
+  const handleUpload = async (image: any) => {
+    // Handle file upload logic here
+    try {
+      const formData = new FormData();
+      formData.append("fileUpload", image);
+
+      await axios.post("http://localhost:8000/api/v1/files/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+          target_type: "images",
+        },
+      });
+      setInfo({
+        ...info,
+        imgUrl: image.name,
+      });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      console.log(e.target.files[0]);
+      handleUpload(e.target.files[0]);
+    }
+  };
+
   return (
     <Button
-      onClick={(e) => e.preventDefault()}
       component="label"
       variant="contained"
       startIcon={<CloudUploadIcon />}
     >
       Upload file
-      <VisuallyHiddenInput type="file" />
+      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
     </Button>
   );
 }
@@ -133,6 +166,25 @@ const Step2 = (props: ITrack) => {
       label: "PARTY",
     },
   ];
+  const { data: session } = useSession();
+
+  const handleSubmit = async () => {
+    // Handle form submission logic here
+    const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+      url: "http://localhost:8000/api/v1/tracks",
+      method: "POST",
+      body: {
+        title: info.title,
+        description: info.description,
+        trackUrl: info.trackUrl,
+        imgUrl: info.imgUrl,
+        category: info.category,
+      },
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    });
+  };
 
   return (
     <>
@@ -159,7 +211,7 @@ const Step2 = (props: ITrack) => {
               <div></div>
             </div>
             <div>
-              <InputFileUpload />
+              <InputFileUpload setInfo={setInfo} info={info} />
             </div>
           </Grid>
           <Grid item xs={6} md={8}>
@@ -218,6 +270,7 @@ const Step2 = (props: ITrack) => {
               sx={{
                 mt: 5,
               }}
+              onClick={handleSubmit}
             >
               Save
             </Button>
