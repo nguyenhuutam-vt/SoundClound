@@ -85,7 +85,6 @@ function InputFileUpload(props: any) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      console.log(e.target.files[0]);
       handleUpload(e.target.files[0]);
     }
   };
@@ -125,12 +124,11 @@ const Step2 = (props: ITrack) => {
     imgUrl: "",
     category: "",
   });
-  console.log(info);
   const { trackUpload } = props;
   useEffect(() => {
     setInfo({
       ...info,
-      trackUrl: "CHUYỆN ĐÔI TA-1756521754957.mp3",
+      trackUrl: "Xin-Dung-Lang-Im-Soobin-Hoang-Son-1756615971630.mp3",
     });
   }, [trackUpload]);
 

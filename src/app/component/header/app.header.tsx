@@ -109,7 +109,7 @@ export default function AppHeader() {
       <MenuItem>
         <Link
           style={{ textDecoration: "none", color: "inherit" }}
-          href="/profile"
+          href={`/profile/${session?.user?._id}`}
         >
           Profile
         </Link>

@@ -16,6 +16,8 @@ interface IProps {
 }
 
 const MainSlider = ({ title, data }: IProps) => {
+  console.log(data);
+
   const NextArrow = (props: any) => {
     return (
       <Button

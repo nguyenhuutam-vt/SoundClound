@@ -8,6 +8,7 @@ const SignInPage = async () => {
 
   if (session) {
     //redirect to homepage
+    //khi login git se trực tiếp vào trang này
     redirect("/");
   }
 

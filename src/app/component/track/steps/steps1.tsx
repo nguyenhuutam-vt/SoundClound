@@ -35,7 +35,6 @@ function InputFileUpload() {
       Upload files
       <VisuallyHiddenInput
         type="file"
-        onChange={(event) => console.log(event.target.files)}
         multiple
       />
     </Button>
@@ -88,7 +87,6 @@ const Step1 = (props: IProps) => {
                 let percentCompleted = Math.floor(
                   (progressEvent.loaded * 100) / progressEvent.total
                 );
-                console.log(`Upload progress: ${percentCompleted}%`);
                 setPercent(percentCompleted);
                 props.setTrackUpload({
                   ...trackUpload,

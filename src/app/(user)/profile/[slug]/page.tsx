@@ -1,0 +1,33 @@
+import { sendRequest } from "@/utils/api";
+import CardPage from "../card/page";
+import { Container } from "@mui/material";
+
+const ProfilePage = async ({ params }: { params: { slug: string } }) => {
+  //cach lay id tu slug truyen qa page la
+  const userId = params.slug;
+  const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
+    url: "http://localhost:8000/api/v1/tracks/users?current=1&pageSize=10",
+    method: "POST",
+    body: {
+      id: userId,
+    },
+  });
+  //@ts-ignore
+  const d = chills?.data?.result ?? [];
+  return (
+    <Container>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "20px",
+          padding: "20px",
+        }}
+      >
+        <CardPage results={d} />
+      </div>
+    </Container>
+  );
+};
+
+export default ProfilePage;

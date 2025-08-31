@@ -16,24 +16,14 @@ export const authOptions: AuthOptions = {
     }),
     // ...add more providers here
 
+    //khi login bang BE no se zo day
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "SoundCloud",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
         const res = await sendRequest<IBackendRes<JWT>>({
           url: "http://localhost:8000/api/v1/auth/login",
           method: "POST",
@@ -43,13 +33,11 @@ export const authOptions: AuthOptions = {
           },
         });
 
-        // If no error and we have user data, return it
         if (res && res.data) {
           return res.data as any;
         } else {
           throw new Error(res.message || "Login failed");
         }
-        // Return null if user data could not be retrieved
       },
     }),
   ],
@@ -78,7 +66,7 @@ export const authOptions: AuthOptions = {
         //@ts-ignore
         token.refresh_token = user.refresh_token;
         //@ts-ignore
-        token.user = user;
+        token.user = user.user;
       }
 
       return token;

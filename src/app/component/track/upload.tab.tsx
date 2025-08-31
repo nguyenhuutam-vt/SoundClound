@@ -33,12 +33,11 @@ const UploadTabs = () => {
   const [trackUpload, setTrackUpload] = React.useState({
     fileName: "",
     percent: 0,
-    uploadedTrackName:""
+    uploadedTrackName: "",
   });
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  console.log(trackUpload);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -48,12 +47,16 @@ const UploadTabs = () => {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Track" />
-          <Tab label="Basic" />
+          <Tab label="Track" disabled={value === 1} />
+          <Tab label="Basic" disabled={value === 0} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Step1 setValue={setValue} setTrackUpload={setTrackUpload} trackUpload={trackUpload} />
+        <Step1
+          setValue={setValue}
+          setTrackUpload={setTrackUpload}
+          trackUpload={trackUpload}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Step2 trackUpload={trackUpload} />
