@@ -1,14 +1,27 @@
 "use client";
+import { useTrackContext } from "@/lib/track.wrapper";
 import { useHasMounted } from "@/utils/customHook";
 import { AppBar, Container, Toolbar } from "@mui/material";
+import { useEffect, useRef } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 const AppFooter = () => {
+  const { currentTrack } = useTrackContext();
+  const audioRef = useRef<any>(null);
+  useEffect(() => {
+    if (!currentTrack.isPlaying && audioRef.current) {
+      audioRef?.current?.audio?.current.pause();
+    } else {
+      audioRef?.current?.audio?.current.play();
+    }
+    console.log("Current track:", audioRef);
+  }, [currentTrack.isPlaying]);
+
   const hasMounted = useHasMounted();
   if (!hasMounted) {
     return <></>;
   }
-
+  //lay gia tri tu context
 
   return (
     <AppBar
@@ -19,9 +32,11 @@ const AppFooter = () => {
       <Toolbar>
         <Container sx={{ display: "flex", gap: 10 }}>
           <AudioPlayer
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
+            key={currentTrack._id}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
             volume={0.5}
-           
+            autoPlay={currentTrack.isPlaying}
+            ref={audioRef}
             // other props here
           />
           <div

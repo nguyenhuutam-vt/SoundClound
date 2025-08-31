@@ -1,5 +1,6 @@
 import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import NextAuthProvider from "@/lib/next.auth.proivder";
+import { TrackContextProvider } from "@/lib/track.wrapper";
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +10,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <NextAuthProvider>{children}</NextAuthProvider>
+          <NextAuthProvider>
+            <TrackContextProvider>{children}</TrackContextProvider>
+          </NextAuthProvider>
         </ThemeRegistry>
       </body>
     </html>

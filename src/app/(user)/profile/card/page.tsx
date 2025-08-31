@@ -11,7 +11,9 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-
+import { useTrackContext } from "@/lib/track.wrapper";
+import PauseIcon from "@mui/icons-material/Pause";
+import Link from "next/link";
 interface IProps {
   meta?: any;
   results: ITrackTop[];
@@ -19,15 +21,23 @@ interface IProps {
 const CardPage = ({ results, meta }: IProps) => {
   const theme = useTheme();
 
+  //dua gia tri len context, khi setCurrentTrack thay doi thi
+  const { currentTrack, setCurrentTrack } = useTrackContext();
+  console.log(currentTrack);
+
   return (
     <>
       {results.map((item) => (
         <Card sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
-              <Typography component="div" variant="h5">
-                {item.title}
-              </Typography>
+              <Link
+                href={`/track/${item._id}?audio=${item.trackUrl}&id=${item._id}`}
+              >
+                <Typography component="div" variant="h5">
+                  {item.title}
+                </Typography>
+              </Link>
               <Typography
                 variant="subtitle1"
                 component="div"
@@ -44,9 +54,30 @@ const CardPage = ({ results, meta }: IProps) => {
                   <SkipPreviousIcon />
                 )}
               </IconButton>
-              <IconButton aria-label="play/pause">
-                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-              </IconButton>
+              {item._id === currentTrack._id ? (
+                <IconButton
+                  aria-label="play/pause"
+                  onClick={() =>
+                    setCurrentTrack({
+                      ...item,
+                      isPlaying: !currentTrack.isPlaying,
+                    })
+                  }
+                >
+                  {currentTrack.isPlaying ? (
+                    <PauseIcon sx={{ height: 38, width: 38 }} />
+                  ) : (
+                    <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                  )}
+                </IconButton>
+              ) : (
+                <IconButton
+                  aria-label="play"
+                  onClick={() => setCurrentTrack({ ...item, isPlaying: true })}
+                >
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                </IconButton>
+              )}
               <IconButton aria-label="next">
                 {theme.direction === "rtl" ? (
                   <SkipPreviousIcon />

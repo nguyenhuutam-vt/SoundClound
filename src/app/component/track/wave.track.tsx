@@ -5,12 +5,30 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from "wavesurfer.js";
 import "./wave.css";
 import { Tooltip } from "@mui/material";
+import { sendRequest } from "@/utils/api";
 const WaveTrack = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const fileName = searchParams.get("audio");
-
+  const id = searchParams.get("id");
+  const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchTrackInfo = async () => {
+      if (!id) return;
+
+      const response = await sendRequest<IBackendRes<ITrackTop>>({
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
+        method: "GET",
+      });
+      if (response && response.data) {
+        setTrackInfo(response.data);
+      }
+    };
+
+    fetchTrackInfo();
+  }, [id]);
 
   const optionsMemo = useMemo((): Omit<WaveSurferOptions, "container"> => {
     // Define the waveform gradient
@@ -69,6 +87,7 @@ const WaveTrack = () => {
       waveColor: gradient,
       progressColor: "orange",
       url: `/api?audio=${fileName}`, //api tu route, api
+      // url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${fileName}`,
       barWidth: 2,
     };
   }, [fileName]); // Thêm fileName vào dependency
