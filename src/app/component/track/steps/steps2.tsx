@@ -68,12 +68,16 @@ function InputFileUpload(props: any) {
       const formData = new FormData();
       formData.append("fileUpload", image);
 
-      await axios.post("http://localhost:8000/api/v1/files/upload", formData, {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-          target_type: "images",
-        },
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+            target_type: "images",
+          },
+        }
+      );
       setInfo({
         ...info,
         imgUrl: image.name,
@@ -169,7 +173,7 @@ const Step2 = (props: ITrack) => {
   const handleSubmit = async () => {
     // Handle form submission logic here
     const res = await sendRequest<IBackendRes<ITrackTop[]>>({
-      url: "http://localhost:8000/api/v1/tracks",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
       method: "POST",
       body: {
         title: info.title,

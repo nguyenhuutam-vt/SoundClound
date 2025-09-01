@@ -6,7 +6,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
   //cach lay id tu slug truyen qa page la
   const userId = params.slug;
   const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8000/api/v1/tracks/users?current=1&pageSize=10",
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users?current=1&pageSize=10`,
     method: "POST",
     body: {
       id: userId,
@@ -24,7 +24,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
           padding: "20px",
         }}
       >
-        <CardPage results={d} />
+        <CardPage results={d || []} />
       </div>
     </Container>
   );

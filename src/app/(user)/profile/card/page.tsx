@@ -27,12 +27,14 @@ const CardPage = ({ results, meta }: IProps) => {
 
   return (
     <>
-      {results.map((item) => (
+      {(results ?? []).map((item) => (
         <Card sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
               <Link
-                href={`/track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`}
+                href={`/track/${convertSlugUrl(item.title)}-${
+                  item._id
+                }.html?audio=${item.trackUrl}`}
               >
                 <Typography component="div" variant="h5">
                   {item.title}
@@ -90,7 +92,7 @@ const CardPage = ({ results, meta }: IProps) => {
           <CardMedia
             component="img"
             sx={{ width: 151 }}
-            image={`http://localhost:8000/images/${item.imgUrl}`}
+            image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
             alt="Live from space album cover"
           />
         </Card>

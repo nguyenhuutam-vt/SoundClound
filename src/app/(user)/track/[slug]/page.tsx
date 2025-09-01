@@ -16,7 +16,11 @@ export async function generateMetadata(
   // read route params
   // fetch data
   const res = await sendRequest<IBackendRes<ITrackTop>>({
-    url: `http://localhost:8000/api/v1/tracks/${(await params).slug}`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${
+      (
+        await params
+      ).slug
+    }`,
     method: "GET",
   });
 
@@ -34,6 +38,14 @@ export async function generateMetadata(
   };
 }
 
+export async function generateStaticParams() {
+  return [
+    { slug: "tinh-co-yeu-em-68abc19c5d201c555f2ff213" },
+    { slug: "nu-hon-bisou-68abc19c5d201c555f2ff20d" },
+    { slug: "mien-man-68abc19c5d201c555f2ff20b" },
+  ];
+}
+
 const DetailTrackPage = async (props: any) => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -43,12 +55,12 @@ const DetailTrackPage = async (props: any) => {
   params.slug = words[0].split("-").slice(-1)[0];
 
   const res = await sendRequest<IBackendRes<ITrackTop>>({
-    url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
     method: "GET",
   });
 
   const cmtTrack = await sendRequest<IBackendRes<ICmtTrack[]>>({
-    url: `http://localhost:8000/api/v1/tracks/comments`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
     method: "POST",
     queryParams: {
       current: 1,
