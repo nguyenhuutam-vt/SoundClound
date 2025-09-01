@@ -1,5 +1,6 @@
 import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import NextAuthProvider from "@/lib/next.auth.proivder";
+import NProgressWrapper from "@/lib/nprogress.wrapper";
 import { TrackContextProvider } from "@/lib/track.wrapper";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
@@ -16,9 +17,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <NextAuthProvider>
-            <TrackContextProvider>{children}</TrackContextProvider>
-          </NextAuthProvider>
+          <NProgressWrapper>
+            <NextAuthProvider>
+              <TrackContextProvider>{children}</TrackContextProvider>
+            </NextAuthProvider>
+          </NProgressWrapper>
         </ThemeRegistry>
       </body>
     </html>

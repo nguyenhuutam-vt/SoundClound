@@ -2,6 +2,7 @@ import WaveTrack from "@/app/component/track/wave.track";
 import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
 import type { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 import slugify from "slugify";
 type Props = {
   params: Promise<{ slug: string }>;
@@ -34,6 +35,8 @@ export async function generateMetadata(
 }
 
 const DetailTrackPage = async (props: any) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   const { params } = props;
 
   const words = params.slug.split(".html");
@@ -55,6 +58,9 @@ const DetailTrackPage = async (props: any) => {
     },
   });
 
+  if (!res.data) {
+    notFound();
+  }
   //@ts-ignore
   const comments = cmtTrack?.data?.result ?? [];
 

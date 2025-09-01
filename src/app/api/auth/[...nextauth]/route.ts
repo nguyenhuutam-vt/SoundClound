@@ -8,7 +8,7 @@ export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
 
   //ket noi next-auth
-  secret: process.env.NO_SECRET!,
+  secret: process.env.NEXTAUTH_SECRET!,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID!,
