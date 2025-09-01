@@ -20,6 +20,8 @@ import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signOut, signIn } from "next-auth/react";
+import { fetchDefaultImg } from "@/utils/api";
+import Image from "next/image";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -226,7 +228,27 @@ export default function AppHeader() {
                   <Link href="/playlist">Playlist</Link>
                   <Link href="/likes">Likes</Link>
                   <Link href="/track/upload">Upload</Link>
-                  <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
+                  {/* <Avatar onClick={handleProfileMenuOpen}>T</Avatar> */}
+                  {/* <img
+                    src={fetchDefaultImg(session.user.type)}
+                    alt=""
+                    className=""
+                    style={{
+                      height: "40px",
+                      width: "40px",
+                      borderRadius: "50%",
+                    }}
+                    onClick={handleProfileMenuOpen}
+                  /> */}
+
+                  <Image
+                    src={fetchDefaultImg(session.user.type)}
+                    alt=""
+                    width={40}
+                    height={40}
+                    style={{ borderRadius: "50%" }}
+                    onClick={handleProfileMenuOpen}
+                  />
                 </>
               ) : (
                 <>

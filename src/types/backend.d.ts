@@ -2,6 +2,36 @@ export {};
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
 declare global {
+  interface ICmtTrack {
+    _id: string;
+    content: string;
+    moment: number;
+    user: {
+      _id: string;
+      email: string;
+      name: string;
+      role: string;
+      type: string;
+    };
+    track: string;
+    isDeleted: false;
+    __v: 0;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface ICmtTrackRes {
+    content: string;
+    moment: number;
+    user: string;
+    track: string;
+    isDeleted: false;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: 0;
+  }
+
   interface ITrackTop {
     _id: string;
     title: string;

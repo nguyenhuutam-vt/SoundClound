@@ -5,30 +5,23 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from "wavesurfer.js";
 import "./wave.css";
 import { Tooltip } from "@mui/material";
-import { sendRequest } from "@/utils/api";
-const WaveTrack = () => {
+import { fetchDefaultImg, sendRequest } from "@/utils/api";
+import { useTrackContext } from "@/lib/track.wrapper";
+import CommentTrack from "./comment.track";
+
+interface IProps {
+  track: ITrackTop | null;
+  comments: ICmtTrack[];
+}
+
+const WaveTrack = (props: IProps) => {
+  const { track, comments } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const fileName = searchParams.get("audio");
-  const id = searchParams.get("id");
-  const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchTrackInfo = async () => {
-      if (!id) return;
-
-      const response = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${id}`,
-        method: "GET",
-      });
-      if (response && response.data) {
-        setTrackInfo(response.data);
-      }
-    };
-
-    fetchTrackInfo();
-  }, [id]);
+  const { currentTrack, setCurrentTrack } = useTrackContext();
 
   const optionsMemo = useMemo((): Omit<WaveSurferOptions, "container"> => {
     // Define the waveform gradient
@@ -154,12 +147,20 @@ const WaveTrack = () => {
     return `calc(${percent}% - 10px)`; // Giảm 10px để căn giữa ảnh đại diện
   };
 
+  useEffect(() => {
+    if (track?._id === currentTrack._id && wavesurfer) {
+      currentTrack.isPlaying ? wavesurfer.play() : wavesurfer.pause();
+    }
+  }, [currentTrack]);
+
   return (
     <div
       style={{
         marginTop: "20px",
       }}
     >
+      <div>{track?.title}</div>
+
       <div ref={containerRef} className="wave-form-container">
         <div className="time" id="time">
           {formatTime(wavesurfer?.getCurrentTime() || 0)}
@@ -168,10 +169,10 @@ const WaveTrack = () => {
           {formatTime(wavesurfer?.getDuration() || 0)}
         </div>
         <div className="comments" style={{ display: "flex" }}>
-          {arrComments.map((item) => (
-            <Tooltip title={item.content} key={item.id}>
+          {comments.map((item) => (
+            <Tooltip title={item.content} key={item._id}>
               <img
-                src={item.avatar}
+                src={fetchDefaultImg(item.user.type)}
                 alt=""
                 className=""
                 style={{
@@ -188,7 +189,19 @@ const WaveTrack = () => {
           ))}
         </div>
       </div>
-      <button onClick={onPlayPause}>{isPlaying ? "Pause" : "Play"}</button>
+      <button
+        onClick={() => {
+          onPlayPause();
+          if (!track) return;
+          setCurrentTrack({ ...track, isPlaying: !isPlaying });
+        }}
+      >
+        {isPlaying ? "Pause" : "Play"}
+      </button>
+
+      <div>
+        <CommentTrack comments={comments} track={track} wavesurfer={wavesurfer} />
+      </div>
     </div>
   );
 };

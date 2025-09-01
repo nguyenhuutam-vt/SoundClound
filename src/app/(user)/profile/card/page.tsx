@@ -14,6 +14,7 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { useTrackContext } from "@/lib/track.wrapper";
 import PauseIcon from "@mui/icons-material/Pause";
 import Link from "next/link";
+import { convertSlugUrl } from "@/utils/api";
 interface IProps {
   meta?: any;
   results: ITrackTop[];
@@ -23,7 +24,6 @@ const CardPage = ({ results, meta }: IProps) => {
 
   //dua gia tri len context, khi setCurrentTrack thay doi thi
   const { currentTrack, setCurrentTrack } = useTrackContext();
-  console.log(currentTrack);
 
   return (
     <>
@@ -32,7 +32,7 @@ const CardPage = ({ results, meta }: IProps) => {
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
               <Link
-                href={`/track/${item._id}?audio=${item.trackUrl}&id=${item._id}`}
+                href={`/track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`}
               >
                 <Typography component="div" variant="h5">
                   {item.title}

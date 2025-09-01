@@ -9,15 +9,14 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
-
+import { convertSlugUrl } from "@/utils/api";
+import Image from "next/image";
 interface IProps {
   title: string;
   data: ITrackTop[];
 }
 
 const MainSlider = ({ title, data }: IProps) => {
-  console.log(data);
-
   const NextArrow = (props: any) => {
     return (
       <Button
@@ -86,12 +85,22 @@ const MainSlider = ({ title, data }: IProps) => {
         {data.map((track) => {
           return (
             <div className="track" key={track._id}>
-              <img
+              {/* <img
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                 alt=""
+              /> */}
+              <Image
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                alt=""
+                width={150}
+                height={200}
+                style={{ objectFit: "cover" }}
               />
+
               <Link
-                href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}
+                href={`/track/${convertSlugUrl(track.title)}-${
+                  track._id
+                }.html?audio=${track.trackUrl}`}
               >
                 <h3>{track.title}</h3>
               </Link>
