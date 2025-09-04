@@ -2,6 +2,7 @@ import WaveTrack from "@/app/component/track/wave.track";
 import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
 import type { Metadata, ResolvingMetadata } from "next";
+import next from "next";
 import { notFound } from "next/navigation";
 import slugify from "slugify";
 type Props = {
@@ -57,6 +58,9 @@ const DetailTrackPage = async (props: any) => {
   const res = await sendRequest<IBackendRes<ITrackTop>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
     method: "GET",
+    nextOption: {
+      next: { tags: ["track-by-id"] },
+    },
   });
 
   const cmtTrack = await sendRequest<IBackendRes<ICmtTrack[]>>({

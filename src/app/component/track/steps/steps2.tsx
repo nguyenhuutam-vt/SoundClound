@@ -132,7 +132,7 @@ const Step2 = (props: ITrack) => {
   useEffect(() => {
     setInfo({
       ...info,
-      trackUrl: "Xin-Dung-Lang-Im-Soobin-Hoang-Son-1756615971630.mp3",
+      trackUrl: "Xin-Dung-Lang-Im-Soobin-Hoang-Son-1756950631657.mp3",
     });
   }, [trackUpload]);
 
@@ -181,6 +181,10 @@ const Step2 = (props: ITrack) => {
         trackUrl: info.trackUrl,
         imgUrl: info.imgUrl,
         category: info.category,
+      },
+      queryParams: {
+        tag: "track-by-profile",
+        secret: "justASecretTokenForRevalidation",
       },
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
